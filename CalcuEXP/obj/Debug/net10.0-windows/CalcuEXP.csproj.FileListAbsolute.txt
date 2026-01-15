@@ -1,0 +1,15 @@
+F:\repos\Proyecto3VeranoDatos1\CalcuEXP\obj\Debug\net10.0-windows\CalcuEXP.GeneratedMSBuildEditorConfig.editorconfig
+F:\repos\Proyecto3VeranoDatos1\CalcuEXP\obj\Debug\net10.0-windows\CalcuEXP.AssemblyInfoInputs.cache
+F:\repos\Proyecto3VeranoDatos1\CalcuEXP\obj\Debug\net10.0-windows\CalcuEXP.AssemblyInfo.cs
+F:\repos\Proyecto3VeranoDatos1\CalcuEXP\obj\Debug\net10.0-windows\CalcuEXP.csproj.CoreCompileInputs.cache
+F:\repos\Proyecto3VeranoDatos1\CalcuEXP\obj\Debug\net10.0-windows\CalcuEXP.sourcelink.json
+F:\repos\Proyecto3VeranoDatos1\CalcuEXP\bin\Debug\net10.0-windows\CalcuEXP.exe
+F:\repos\Proyecto3VeranoDatos1\CalcuEXP\bin\Debug\net10.0-windows\CalcuEXP.deps.json
+F:\repos\Proyecto3VeranoDatos1\CalcuEXP\bin\Debug\net10.0-windows\CalcuEXP.runtimeconfig.json
+F:\repos\Proyecto3VeranoDatos1\CalcuEXP\bin\Debug\net10.0-windows\CalcuEXP.dll
+F:\repos\Proyecto3VeranoDatos1\CalcuEXP\bin\Debug\net10.0-windows\CalcuEXP.pdb
+F:\repos\Proyecto3VeranoDatos1\CalcuEXP\obj\Debug\net10.0-windows\CalcuEXP.dll
+F:\repos\Proyecto3VeranoDatos1\CalcuEXP\obj\Debug\net10.0-windows\refint\CalcuEXP.dll
+F:\repos\Proyecto3VeranoDatos1\CalcuEXP\obj\Debug\net10.0-windows\CalcuEXP.pdb
+F:\repos\Proyecto3VeranoDatos1\CalcuEXP\obj\Debug\net10.0-windows\CalcuEXP.genruntimeconfig.cache
+F:\repos\Proyecto3VeranoDatos1\CalcuEXP\obj\Debug\net10.0-windows\ref\CalcuEXP.dll

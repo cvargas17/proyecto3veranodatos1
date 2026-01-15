@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 // Nodo del árbol de expresión binaria
 public class ExpressionNode
@@ -95,6 +96,14 @@ public class ExpressionCalculator
         return tokenIndex < tokens.Count ? tokens[tokenIndex++] : null;
     }
 
+    // Validar que un token no sea nulo
+    private string ValidateToken(string? token)
+    {
+        if (token == null)
+            throw new ArgumentException("Token inesperado: nulo");
+        return token;
+    }
+
     // Parser recursivo descendente
     public ExpressionNode Parse()
     {
@@ -114,7 +123,7 @@ public class ExpressionCalculator
 
         while (PeekToken() == "or")
         {
-            string op = GetToken();
+            string op = ValidateToken(GetToken());
             var right = ParseXorExpression();
             var node = new ExpressionNode(op, isOperator: true);
             node.Left = left;
@@ -131,7 +140,7 @@ public class ExpressionCalculator
 
         while (PeekToken() == "xor")
         {
-            string op = GetToken();
+            string op = ValidateToken(GetToken());
             var right = ParseAndExpression();
             var node = new ExpressionNode(op, isOperator: true);
             node.Left = left;
@@ -148,7 +157,7 @@ public class ExpressionCalculator
 
         while (PeekToken() == "and")
         {
-            string op = GetToken();
+            string op = ValidateToken(GetToken());
             var right = ParseAddSubtractExpression();
             var node = new ExpressionNode(op, isOperator: true);
             node.Left = left;
@@ -165,7 +174,7 @@ public class ExpressionCalculator
 
         while (PeekToken() == "+" || PeekToken() == "-")
         {
-            string op = GetToken();
+            string op = ValidateToken(GetToken());
             var right = ParseMultiplyDivideExpression();
             var node = new ExpressionNode(op, isOperator: true);
             node.Left = left;
@@ -182,7 +191,7 @@ public class ExpressionCalculator
 
         while (PeekToken() == "*" || PeekToken() == "/")
         {
-            string op = GetToken();
+            string op = ValidateToken(GetToken());
             var right = ParseModuloExpression();
             var node = new ExpressionNode(op, isOperator: true);
             node.Left = left;
@@ -199,7 +208,7 @@ public class ExpressionCalculator
 
         while (PeekToken() == "%")
         {
-            string op = GetToken();
+            string op = ValidateToken(GetToken());
             var right = ParseExponentExpression();
             var node = new ExpressionNode(op, isOperator: true);
             node.Left = left;
@@ -216,7 +225,7 @@ public class ExpressionCalculator
 
         while (PeekToken() == "**")
         {
-            string op = GetToken();
+            string op = ValidateToken(GetToken());
             var right = ParseUnaryExpression();
             var node = new ExpressionNode(op, isOperator: true);
             node.Left = left;
@@ -231,7 +240,7 @@ public class ExpressionCalculator
     {
         if (PeekToken() == "not")
         {
-            string op = GetToken();
+            string op = ValidateToken(GetToken());
             var right = ParseUnaryExpression();
             var node = new ExpressionNode(op, isOperator: true);
             node.Right = right;
@@ -243,7 +252,7 @@ public class ExpressionCalculator
 
     private ExpressionNode ParsePrimaryExpression()
     {
-        string token = PeekToken();
+        string? token = PeekToken();
 
         if (token == "(")
         {
@@ -255,7 +264,7 @@ public class ExpressionCalculator
             return expr;
         }
 
-        if (double.TryParse(token, out _))
+        if (token != null && double.TryParse(token, out _))
         {
             GetToken();
             return new ExpressionNode(token, isOperand: true);
@@ -346,52 +355,13 @@ public class ExpressionCalculator
     }
 }
 
-// Programa principal
 class Program
 {
+    [STAThread]
     static void Main()
     {
-        Console.OutputEncoding = System.Text.Encoding.UTF8;
-        Console.WriteLine("╔════════════════════════════════════════════════════════════╗");
-        Console.WriteLine("║         CALCULADORA DE EXPRESIONES BINARIAS                ║");
-        Console.WriteLine("║                                                            ║");
-        Console.WriteLine("║  Operaciones algebraicas: +, -, *, /, %, **               ║");
-        Console.WriteLine("║  Operaciones lógicas: and, or, xor, not                   ║");
-        Console.WriteLine("║  Escribe 'salir' para terminar                            ║");
-        Console.WriteLine("╚════════════════════════════════════════════════════════════╝\n");
-
-        while (true)
-        {
-            Console.Write("Ingrese una expresión: ");
-            string input = Console.ReadLine();
-
-            if (input.ToLower() == "salir")
-            {
-                Console.WriteLine("\n¡Hasta luego!");
-                break;
-            }
-
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                Console.WriteLine("Expresión vacía. Intente de nuevo.\n");
-                continue;
-            }
-
-            try
-            {
-                var calculator = new ExpressionCalculator(input);
-                var ast = calculator.Parse();
-
-                Console.WriteLine("\n📊 Árbol de Expresión:");
-                calculator.PrintTree(ast);
-
-                double result = calculator.Evaluate(ast);
-                Console.WriteLine($"\n✓ Resultado: {result}\n");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"\n❌ Error: {ex.Message}\n");
-            }
-        }
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
+        Application.Run(new CalcuEXP.Interfaz());
     }
 }
