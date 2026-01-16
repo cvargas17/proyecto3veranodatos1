@@ -13,8 +13,26 @@ namespace CalcuEXP
 
         public EvaluationHistory(string path = "evaluations.csv")
         {
-            filePath = path;
-            InitializeFile();
+            // Ruta absoluta fija en la carpeta CalcuEXP (una carpeta arriba de CalcuEXP.Server)
+            string docs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string calcuExpDir = Path.Combine(docs, "CalcuEXP");
+            if (!Directory.Exists(calcuExpDir))
+            {
+                Directory.CreateDirectory(calcuExpDir);
+                Console.WriteLine($"[DEBUG] Carpeta de historial creada: {calcuExpDir}");
+            }
+            filePath = Path.Combine(calcuExpDir, "evaluations.csv");
+            Console.WriteLine($"[DEBUG] Historial se guardará en: {filePath}");
+            try
+            {
+                System.Windows.Forms.MessageBox.Show($"Ruta de historial:\n{filePath}", "Debug: Ruta historial", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                Console.WriteLine($"[DEBUG] Ruta de historial: {filePath}");
+                InitializeFile();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show($"No se pudo crear el archivo de historial:\n{ex.Message}", "Error de historial", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            }
         }
 
         // Inicializar archivo CSV si no existe
@@ -22,9 +40,19 @@ namespace CalcuEXP
         {
             lock (lockObject)
             {
-                if (!File.Exists(filePath))
+                try
                 {
-                    File.WriteAllText(filePath, "Fecha,Hora,Expresión,Resultado,Cliente\n");
+                    if (!File.Exists(filePath))
+                    {
+                        File.WriteAllText(filePath, "Fecha,Hora,Expresión,Resultado,Cliente\n");
+                        Console.WriteLine($"[DEBUG] Archivo de historial creado en: {filePath}");
+                        Console.WriteLine($"[DEBUG] Archivo de historial creado en: {filePath}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.Forms.MessageBox.Show($"No se pudo crear el archivo de historial:\n{ex.Message}", "Error de historial", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                    Console.WriteLine($"[ERROR] No se pudo crear el archivo de historial: {ex.Message}");
                 }
             }
         }
@@ -50,7 +78,7 @@ namespace CalcuEXP
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error guardando evaluación: {ex.Message}");
+                    System.Windows.Forms.MessageBox.Show($"No se pudo guardar la evaluación en el historial:\n{ex.Message}", "Error de historial", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 }
             }
         }

@@ -124,10 +124,12 @@ namespace CalcuEXP
                         else
                         {
                             // Evaluar expresión
+                            Console.WriteLine($"[DEBUG] Expresión recibida: '{comando}'");
                             OnExpressionReceived?.Invoke(this, $"Expresión recibida: {comando}");
                             string respuesta = EvaluarExpresion(comando);
+                            Console.WriteLine($"[DEBUG] Respuesta enviada: '{respuesta}'");
                             history.SaveEvaluation(comando, respuesta, clientAddress);
-                            
+
                             byte[] responseBytes = Encoding.UTF8.GetBytes(respuesta);
                             stream.Write(responseBytes, 0, responseBytes.Length);
                             stream.Flush();
