@@ -39,10 +39,10 @@ namespace CalcuEXP
                 Padding = new Padding(10)
             };
 
-            Label lblServLabel = new Label { Text = "Servidor:", Left = 10, Top = 10, Width = 60, Font = new Font("Arial", 10, FontStyle.Bold) };
+            Label lblServLabel = new Label { Text = "Server:", Left = 15, Top = 12, Width = 60, Font = new Font("Arial", 10, FontStyle.Bold) };
             txtServidor = new TextBox { Left = 80, Top = 10, Width = 150, Height = 25, Font = new Font("Arial", 10), Text = "127.0.0.1" };
 
-            Label lblPuertoLabel = new Label { Text = "Puerto:", Left = 240, Top = 10, Width = 50, Font = new Font("Arial", 10, FontStyle.Bold) };
+            Label lblPuertoLabel = new Label { Text = "Port:", Left = 250, Top = 12, Width = 50, Font = new Font("Arial", 10, FontStyle.Bold) };
             txtPuerto = new TextBox { Left = 300, Top = 10, Width = 80, Height = 25, Font = new Font("Arial", 10), Text = "5000" };
 
             btnConectar = new Button
@@ -62,7 +62,7 @@ namespace CalcuEXP
             {
                 Text = "Desconectado",
                 Left = 500,
-                Top = 10,
+                Top = 15,
                 Width = 400,
                 Height = 25,
                 Font = new Font("Arial", 10),
@@ -84,9 +84,10 @@ namespace CalcuEXP
             Label lblExpresion = new Label
             {
                 Text = "Expresión:",
-                Top = 10,
+                Top = 15,
+                Left = 10,
                 Width = 70,
-                Font = new Font("Arial", 11, FontStyle.Bold)
+                Font = new Font("Arial", 9, FontStyle.Bold)
             };
 
             txtExpresion = new TextBox
@@ -124,7 +125,20 @@ namespace CalcuEXP
             };
             btnLimpiar.Click += (s, e) => LimpiarCampos();
 
-            panelEntrada.Controls.AddRange(new Control[] { lblExpresion, txtExpresion, btnEvaluar, btnLimpiar });
+            Button btnHistorial = new Button
+            {
+                Text = "Historial",
+                Left = 810,
+                Top = 45,
+                Width = 80,
+                Height = 30,
+                BackColor = Color.CornflowerBlue,
+                ForeColor = Color.White,
+                Font = new Font("Arial", 10, FontStyle.Bold)
+            };
+            btnHistorial.Click += (s, e) => VerHistorial();
+
+            panelEntrada.Controls.AddRange(new Control[] { lblExpresion, txtExpresion, btnEvaluar, btnHistorial, btnLimpiar });
 
             // Panel central - Resultado
             Panel panelResultado = new Panel
@@ -137,8 +151,9 @@ namespace CalcuEXP
 
             Label lblResultado = new Label
             {
-                Text = "Resultado:",
-                Top = 10,
+                Text = "Result:",
+                Top = 12,
+                Left = 15,
                 Width = 70,
                 Font = new Font("Arial", 11, FontStyle.Bold)
             };
@@ -178,7 +193,7 @@ namespace CalcuEXP
             Label lblLog = new Label
             {
                 Text = "Log de Comunicación:",
-                Top = 10,
+                Top = -20,
                 Width = 200,
                 Font = new Font("Arial", 11, FontStyle.Bold)
             };
@@ -328,6 +343,83 @@ namespace CalcuEXP
             txtResultado!.Clear();
             lblEstado!.Text = "";
             txtExpresion.Focus();
+        }
+
+        private void VerHistorial()
+        {
+            if (!(client?.IsConnected ?? false))
+            {
+                lblEstado!.Text = "❌ No está conectado al servidor";
+                lblEstado.ForeColor = Color.Red;
+                return;
+            }
+
+            try
+            {
+                string? historial = client.ObtenerHistorial();
+
+                if (historial != null && !string.IsNullOrWhiteSpace(historial))
+                {
+                    // Crear una nueva ventana para mostrar el historial
+                    Form formHistorial = new Form
+                    {
+                        Text = "Historial de Evaluaciones",
+                        Width = 900,
+                        Height = 600,
+                        StartPosition = FormStartPosition.CenterParent,
+                        Owner = this
+                    };
+
+                    RichTextBox rtbHistorial = new RichTextBox
+                    {
+                        Dock = DockStyle.Fill,
+                        Font = new Font("Courier New", 9),
+                        ReadOnly = true,
+                        BackColor = Color.White,
+                        ForeColor = Color.Black,
+                        Text = historial
+                    };
+
+                    Button btnExportar = new Button
+                    {
+                        Text = "Exportar CSV",
+                        Dock = DockStyle.Bottom,
+                        Height = 40,
+                        BackColor = Color.LimeGreen,
+                        ForeColor = Color.White,
+                        Font = new Font("Arial", 10, FontStyle.Bold)
+                    };
+
+                    btnExportar.Click += (s, e) =>
+                    {
+                        SaveFileDialog saveDialog = new SaveFileDialog
+                        {
+                            Filter = "CSV Files (*.csv)|*.csv",
+                            FileName = $"historial_{DateTime.Now:yyyyMMdd_HHmmss}.csv",
+                            DefaultExt = "csv"
+                        };
+
+                        if (saveDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            System.IO.File.WriteAllText(saveDialog.FileName, historial);
+                            MessageBox.Show($"Historial exportado a:\n{saveDialog.FileName}", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    };
+
+                    formHistorial.Controls.Add(rtbHistorial);
+                    formHistorial.Controls.Add(btnExportar);
+                    formHistorial.ShowDialog();
+                }
+                else
+                {
+                    MessageBox.Show("El historial está vacío", "Historial", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                lblEstado!.Text = $"❌ Error al obtener historial: {ex.Message}";
+                lblEstado.ForeColor = Color.Red;
+            }
         }
     }
 }

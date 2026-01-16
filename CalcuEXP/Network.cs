@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -14,6 +15,7 @@ namespace CalcuEXP
         private bool isRunning;
         private int port;
         private readonly object lockObject = new object();
+        private EvaluationHistory history;
 
         public event EventHandler<string>? OnClientConnected;
         public event EventHandler<string>? OnClientDisconnected;
@@ -24,6 +26,7 @@ namespace CalcuEXP
             this.port = port;
             this.isRunning = false;
             listener = new TcpListener(IPAddress.Any, port);
+            history = new EvaluationHistory();
         }
 
         public void Start()
@@ -94,9 +97,12 @@ namespace CalcuEXP
         {
             try
             {
+                var remoteEndPoint = client.Client.RemoteEndPoint as IPEndPoint;
+                string clientAddress = remoteEndPoint?.Address.ToString() ?? "Desconocido";
+
                 using (NetworkStream stream = client.GetStream())
                 {
-                    byte[] buffer = new byte[1024];
+                    byte[] buffer = new byte[4096];
 
                     while (client.Connected && isRunning)
                     {
@@ -105,14 +111,27 @@ namespace CalcuEXP
                         if (bytesRead == 0)
                             break;
 
-                        string expresion = Encoding.UTF8.GetString(buffer, 0, bytesRead).Trim();
-                        OnExpressionReceived?.Invoke(this, $"Expresión recibida: {expresion}");
-
-                        string respuesta = EvaluarExpresion(expresion);
-                        byte[] responseBytes = Encoding.UTF8.GetBytes(respuesta);
-
-                        stream.Write(responseBytes, 0, responseBytes.Length);
-                        stream.Flush();
+                        string comando = Encoding.UTF8.GetString(buffer, 0, bytesRead).Trim();
+                        
+                        if (comando == "GET_HISTORY")
+                        {
+                            // Enviar historial CSV
+                            string csvContent = history.GetCSVContent();
+                            byte[] responseBytes = Encoding.UTF8.GetBytes(csvContent);
+                            stream.Write(responseBytes, 0, responseBytes.Length);
+                            stream.Flush();
+                        }
+                        else
+                        {
+                            // Evaluar expresión
+                            OnExpressionReceived?.Invoke(this, $"Expresión recibida: {comando}");
+                            string respuesta = EvaluarExpresion(comando);
+                            history.SaveEvaluation(comando, respuesta, clientAddress);
+                            
+                            byte[] responseBytes = Encoding.UTF8.GetBytes(respuesta);
+                            stream.Write(responseBytes, 0, responseBytes.Length);
+                            stream.Flush();
+                        }
                     }
                 }
             }
@@ -151,6 +170,7 @@ namespace CalcuEXP
         private string serverAddress;
         private int port;
         private bool isConnected;
+        private const int BufferSize = 4096;
 
         public event EventHandler<string>? OnConnected;
         public event EventHandler<string>? OnDisconnected;
@@ -228,7 +248,7 @@ namespace CalcuEXP
                 stream.Flush();
 
                 // Recibir respuesta
-                byte[] buffer = new byte[1024];
+                byte[] buffer = new byte[BufferSize];
                 int bytesRead = stream.Read(buffer, 0, buffer.Length);
                 string respuesta = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
@@ -239,6 +259,48 @@ namespace CalcuEXP
             {
                 OnErrorOccurred?.Invoke(this, $"Error al enviar expresión: {ex.Message}");
                 isConnected = false;
+                return null;
+            }
+        }
+
+        public string? ObtenerHistorial()
+        {
+            if (!isConnected)
+            {
+                OnErrorOccurred?.Invoke(this, "No conectado al servidor");
+                return null;
+            }
+
+            try
+            {
+                if (stream == null)
+                {
+                    OnErrorOccurred?.Invoke(this, "Stream de red no disponible");
+                    return null;
+                }
+
+                // Enviar comando para obtener historial
+                byte[] requestBytes = Encoding.UTF8.GetBytes("GET_HISTORY");
+                stream.Write(requestBytes, 0, requestBytes.Length);
+                stream.Flush();
+
+                // Recibir respuesta (puede ser grande)
+                StringBuilder sb = new StringBuilder();
+                byte[] buffer = new byte[BufferSize];
+                int bytesRead;
+
+                while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    sb.Append(Encoding.UTF8.GetString(buffer, 0, bytesRead));
+                    if (bytesRead < BufferSize)
+                        break;
+                }
+
+                return sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                OnErrorOccurred?.Invoke(this, $"Error al obtener historial: {ex.Message}");
                 return null;
             }
         }
