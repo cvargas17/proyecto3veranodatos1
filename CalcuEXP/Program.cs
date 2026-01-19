@@ -72,7 +72,8 @@ public class ExpressionCalculator
     {
         tokens.Clear();
         // Agregar los símbolos lógicos: & (and), | (or), ^ (xor), ~ (not)
-        string pattern = @"(\d+\.?\d*|\+|-|\*{1,2}|/|%|and|or|xor|not|[&|^~]|[\(\)])";
+        // Cada símbolo lógico como alternativa separada para evitar problemas con la clase de caracteres
+        string pattern = @"(\d+\.?\d*|\+|-|\*{1,2}|/|%|and|or|xor|not|&|\||\^|~|[\(\)])";
         MatchCollection matches = Regex.Matches(expression, pattern, RegexOptions.IgnoreCase);
 
         foreach (Match match in matches)
