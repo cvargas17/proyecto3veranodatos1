@@ -337,33 +337,6 @@ public class ExpressionCalculator
         var ast = Parse();
         return Evaluate(ast);
     }
-
-    // Imprimir el árbol en formato legible
-    public void PrintTree(ExpressionNode? node, int level = 0)
-    {
-        if (node == null)
-            return;
-
-        string indent = new string(' ', level * 2);
-        if (node.IsOperand)
-        {
-            Console.WriteLine($"{indent}[Operando: {node.Value}]");
-        }
-        else
-        {
-            Console.WriteLine($"{indent}[Operador: {node.Value}]");
-            if (node.Left != null)
-            {
-                Console.WriteLine($"{indent}  Izquierda:");
-                PrintTree(node.Left, level + 2);
-            }
-            if (node.Right != null)
-            {
-                Console.WriteLine($"{indent}  Derecha:");
-                PrintTree(node.Right, level + 2);
-            }
-        }
-    }
 }
 
 class Program
