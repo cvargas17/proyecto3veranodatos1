@@ -19,14 +19,14 @@ namespace CalcuEXP
             if (!Directory.Exists(calcuExpDir))
             {
                 Directory.CreateDirectory(calcuExpDir);
-                Console.WriteLine($"[DEBUG] Carpeta de historial creada: {calcuExpDir}");
+                
             }
             filePath = Path.Combine(calcuExpDir, "evaluations.csv");
-            Console.WriteLine($"[DEBUG] Historial se guardará en: {filePath}");
+            
             try
             {
                 System.Windows.Forms.MessageBox.Show($"Ruta de historial:\n{filePath}", "Debug: Ruta historial", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
-                Console.WriteLine($"[DEBUG] Ruta de historial: {filePath}");
+                
                 InitializeFile();
             }
             catch (Exception ex)
@@ -45,8 +45,6 @@ namespace CalcuEXP
                     if (!File.Exists(filePath))
                     {
                         File.WriteAllText(filePath, "Fecha,Hora,Expresión,Resultado,Cliente\n");
-                        Console.WriteLine($"[DEBUG] Archivo de historial creado en: {filePath}");
-                        Console.WriteLine($"[DEBUG] Archivo de historial creado en: {filePath}");
                     }
                 }
                 catch (Exception ex)
