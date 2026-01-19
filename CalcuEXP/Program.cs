@@ -33,31 +33,31 @@ public class ExpressionCalculator
     // Operadores soportados
     private static readonly Dictionary<string, int> Precedence = new Dictionary<string, int>
     {
-        { "or", 1 },
-        { "xor", 2 },
-        { "and", 3 },
+        { "or", 1 }, { "|", 1 },
+        { "xor", 2 }, { "^", 2 },
+        { "and", 3 }, { "&", 3 },
         { "+", 4 },
         { "-", 4 },
         { "*", 5 },
         { "/", 5 },
         { "%", 5 },
         { "**", 6 },
-        { "not", 7 }
+        { "not", 7 }, { "~", 7 }
     };
 
     private static readonly HashSet<string> BinaryOperators = new HashSet<string>
     {
-        "+", "-", "*", "/", "%", "**", "and", "or", "xor"
+        "+", "-", "*", "/", "%", "**", "and", "or", "xor", "&", "|", "^"
     };
 
     private static readonly HashSet<string> UnaryOperators = new HashSet<string>
     {
-        "not"
+        "not", "~"
     };
 
     private static readonly HashSet<string> LogicalOperators = new HashSet<string>
     {
-        "and", "or", "xor", "not"
+        "and", "or", "xor", "not", "&", "|", "^", "~"
     };
 
     public ExpressionCalculator(string expr)
@@ -71,12 +71,22 @@ public class ExpressionCalculator
     private void Tokenize()
     {
         tokens.Clear();
-        string pattern = @"(\d+\.?\d*|\+|-|\*{1,2}|/|%|and|or|xor|not|[\(\)])";
+        // Agregar los símbolos lógicos: & (and), | (or), ^ (xor), ~ (not)
+        string pattern = @"(\d+\.?\d*|\+|-|\*{1,2}|/|%|and|or|xor|not|[&|^~]|[\(\)])";
         MatchCollection matches = Regex.Matches(expression, pattern, RegexOptions.IgnoreCase);
 
         foreach (Match match in matches)
         {
-            tokens.Add(match.Value.ToLower());
+            string val = match.Value.ToLower();
+            // Normalizar símbolos a palabras clave
+            switch (val)
+            {
+                case "&": val = "and"; break;
+                case "|": val = "or"; break;
+                case "^": val = "xor"; break;
+                case "~": val = "not"; break;
+            }
+            tokens.Add(val);
         }
 
         // Validar tokens
