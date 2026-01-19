@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CalcuEXP")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ee8f57610fc3e689b314e8cb3b1a8521cb997d08")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+181fd9feaefc92b4c545abc2a97a254392d93b57")]
 [assembly: System.Reflection.AssemblyProductAttribute("CalcuEXP")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CalcuEXP")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
