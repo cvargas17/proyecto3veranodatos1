@@ -153,7 +153,7 @@ namespace CalcuEXP
             try
             {
                 var calculator = new ExpressionCalculator(expresion);
-                var ast = calculator.Parse();
+                var ast = calculator.Arbol();
                 double resultado = calculator.Evaluate(ast);
                 return resultado.ToString();
             }
