@@ -116,11 +116,11 @@ public class ExpressionCalculator
     }
 
     // Parser recursivo descendente
-    public ExpressionNode Parse()
+    public ExpressionNode Arbol()
     {
         Tokenize();
         tokenIndex = 0;
-        var result = ParseOrExpression();
+        var result = ArbolOrExpression();
 
         if (PeekToken() != null)
             throw new ArgumentException("Tokens adicionales después de la expresión");
@@ -128,14 +128,14 @@ public class ExpressionCalculator
         return result;
     }
 
-    private ExpressionNode ParseOrExpression()
+    private ExpressionNode ArbolOrExpression()
     {
-        var left = ParseXorExpression();
+        var left = ArbolXorExpression();
 
         while (PeekToken() == "or")
         {
             string op = ValidateToken(GetToken());
-            var right = ParseXorExpression();
+            var right = ArbolXorExpression();
             var node = new ExpressionNode(op, isOperator: true);
             node.Left = left;
             node.Right = right;
@@ -145,14 +145,14 @@ public class ExpressionCalculator
         return left;
     }
 
-    private ExpressionNode ParseXorExpression()
+    private ExpressionNode ArbolXorExpression()
     {
-        var left = ParseAndExpression();
+        var left = ArbolAndExpression();
 
         while (PeekToken() == "xor")
         {
             string op = ValidateToken(GetToken());
-            var right = ParseAndExpression();
+            var right = ArbolAndExpression();
             var node = new ExpressionNode(op, isOperator: true);
             node.Left = left;
             node.Right = right;
@@ -162,14 +162,14 @@ public class ExpressionCalculator
         return left;
     }
 
-    private ExpressionNode ParseAndExpression()
+    private ExpressionNode ArbolAndExpression()
     {
-        var left = ParseAddSubtractExpression();
+        var left = ArbolAddSubtractExpression();
 
         while (PeekToken() == "and")
         {
             string op = ValidateToken(GetToken());
-            var right = ParseAddSubtractExpression();
+            var right = ArbolAddSubtractExpression();
             var node = new ExpressionNode(op, isOperator: true);
             node.Left = left;
             node.Right = right;
@@ -179,14 +179,14 @@ public class ExpressionCalculator
         return left;
     }
 
-    private ExpressionNode ParseAddSubtractExpression()
+    private ExpressionNode ArbolAddSubtractExpression()
     {
-        var left = ParseMultiplyDivideExpression();
+        var left = ArbolMultiplyDivideExpression();
 
         while (PeekToken() == "+" || PeekToken() == "-")
         {
             string op = ValidateToken(GetToken());
-            var right = ParseMultiplyDivideExpression();
+            var right = ArbolMultiplyDivideExpression();
             var node = new ExpressionNode(op, isOperator: true);
             node.Left = left;
             node.Right = right;
@@ -196,14 +196,14 @@ public class ExpressionCalculator
         return left;
     }
 
-    private ExpressionNode ParseMultiplyDivideExpression()
+    private ExpressionNode ArbolMultiplyDivideExpression()
     {
-        var left = ParseModuloExpression();
+        var left = ArbolModuloExpression();
 
         while (PeekToken() == "*" || PeekToken() == "/")
         {
             string op = ValidateToken(GetToken());
-            var right = ParseModuloExpression();
+            var right = ArbolModuloExpression();
             var node = new ExpressionNode(op, isOperator: true);
             node.Left = left;
             node.Right = right;
@@ -213,14 +213,14 @@ public class ExpressionCalculator
         return left;
     }
 
-    private ExpressionNode ParseModuloExpression()
+    private ExpressionNode ArbolModuloExpression()
     {
-        var left = ParseExponentExpression();
+        var left = ArbolExponentExpression();
 
         while (PeekToken() == "%")
         {
             string op = ValidateToken(GetToken());
-            var right = ParseExponentExpression();
+            var right = ArbolExponentExpression();
             var node = new ExpressionNode(op, isOperator: true);
             node.Left = left;
             node.Right = right;
@@ -230,14 +230,14 @@ public class ExpressionCalculator
         return left;
     }
 
-    private ExpressionNode ParseExponentExpression()
+    private ExpressionNode ArbolExponentExpression()
     {
-        var left = ParseUnaryExpression();
+        var left = ArbolUnaryExpression();
 
         while (PeekToken() == "**")
         {
             string op = ValidateToken(GetToken());
-            var right = ParseUnaryExpression();
+            var right = ArbolUnaryExpression();
             var node = new ExpressionNode(op, isOperator: true);
             node.Left = left;
             node.Right = right;
@@ -247,28 +247,28 @@ public class ExpressionCalculator
         return left;
     }
 
-    private ExpressionNode ParseUnaryExpression()
+    private ExpressionNode ArbolUnaryExpression()
     {
         if (PeekToken() == "not")
         {
             string op = ValidateToken(GetToken());
-            var right = ParseUnaryExpression();
+            var right = ArbolUnaryExpression();
             var node = new ExpressionNode(op, isOperator: true);
             node.Right = right;
             return node;
         }
 
-        return ParsePrimaryExpression();
+        return ArbolPrimaryExpression();
     }
 
-    private ExpressionNode ParsePrimaryExpression()
+    private ExpressionNode ArbolPrimaryExpression()
     {
         string? token = PeekToken();
 
         if (token == "(")
         {
             GetToken(); // consumir '('
-            var expr = ParseOrExpression();
+            var expr = ArbolOrExpression();
             if (PeekToken() != ")")
                 throw new ArgumentException("Paréntesis no balanceados");
             GetToken(); // consumir ')'
@@ -334,7 +334,7 @@ public class ExpressionCalculator
     // Método de evaluación directa
     public double Calculate()
     {
-        var ast = Parse();
+        var ast = Arbol();
         return Evaluate(ast);
     }
 }
