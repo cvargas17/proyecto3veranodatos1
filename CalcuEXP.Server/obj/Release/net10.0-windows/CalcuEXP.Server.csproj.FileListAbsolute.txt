@@ -20,3 +20,6 @@ F:\repos\Proyecto3VeranoDatos1\CalcuEXP.Server\obj\Release\net10.0-windows\refin
 F:\repos\Proyecto3VeranoDatos1\CalcuEXP.Server\obj\Release\net10.0-windows\CalcuEXP.Server.pdb
 F:\repos\Proyecto3VeranoDatos1\CalcuEXP.Server\obj\Release\net10.0-windows\CalcuEXP.Server.genruntimeconfig.cache
 F:\repos\Proyecto3VeranoDatos1\CalcuEXP.Server\obj\Release\net10.0-windows\ref\CalcuEXP.Server.dll
+C:\Users\Chris V\Documents\GitHub\Proyecto3VeranoDatos1\CalcuEXP.Server\obj\Release\net10.0-windows\CalcuEXP.Server.dll
+C:\Users\Chris V\Documents\GitHub\Proyecto3VeranoDatos1\CalcuEXP.Server\obj\Release\net10.0-windows\refint\CalcuEXP.Server.dll
+C:\Users\Chris V\Documents\GitHub\Proyecto3VeranoDatos1\CalcuEXP.Server\obj\Release\net10.0-windows\CalcuEXP.Server.pdb

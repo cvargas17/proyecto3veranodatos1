@@ -30,32 +30,40 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Chris\\.nuget\\packages\\": {}
+    "C:\\Users\\Chris V\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\repos\\Proyecto3VeranoDatos1\\CalcuEXP.Server\\CalcuEXP.Server.csproj",
+      "projectUniqueName": "C:\\Users\\Chris V\\Documents\\GitHub\\Proyecto3VeranoDatos1\\CalcuEXP.Server\\CalcuEXP.Server.csproj",
       "projectName": "CalcuEXP.Server",
-      "projectPath": "F:\\repos\\Proyecto3VeranoDatos1\\CalcuEXP.Server\\CalcuEXP.Server.csproj",
-      "packagesPath": "C:\\Users\\Chris\\.nuget\\packages\\",
-      "outputPath": "F:\\repos\\Proyecto3VeranoDatos1\\CalcuEXP.Server\\obj\\",
+      "projectPath": "C:\\Users\\Chris V\\Documents\\GitHub\\Proyecto3VeranoDatos1\\CalcuEXP.Server\\CalcuEXP.Server.csproj",
+      "packagesPath": "C:\\Users\\Chris V\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Chris V\\Documents\\GitHub\\Proyecto3VeranoDatos1\\CalcuEXP.Server\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Chris\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Chris V\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net10.0-windows"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net10.0-windows7.0": {
           "targetAlias": "net10.0-windows",
           "projectReferences": {
-            "F:\\repos\\Proyecto3VeranoDatos1\\CalcuEXP\\CalcuEXP.csproj": {
-              "projectPath": "F:\\repos\\Proyecto3VeranoDatos1\\CalcuEXP\\CalcuEXP.csproj"
+            "C:\\Users\\Chris V\\Documents\\GitHub\\Proyecto3VeranoDatos1\\CalcuEXP\\CalcuEXP.csproj": {
+              "projectPath": "C:\\Users\\Chris V\\Documents\\GitHub\\Proyecto3VeranoDatos1\\CalcuEXP\\CalcuEXP.csproj"
             }
           }
         }
@@ -91,7 +99,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",

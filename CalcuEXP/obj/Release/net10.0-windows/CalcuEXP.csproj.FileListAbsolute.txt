@@ -13,3 +13,7 @@ F:\repos\Proyecto3VeranoDatos1\CalcuEXP\obj\Release\net10.0-windows\refint\Calcu
 F:\repos\Proyecto3VeranoDatos1\CalcuEXP\obj\Release\net10.0-windows\CalcuEXP.pdb
 F:\repos\Proyecto3VeranoDatos1\CalcuEXP\obj\Release\net10.0-windows\CalcuEXP.genruntimeconfig.cache
 F:\repos\Proyecto3VeranoDatos1\CalcuEXP\obj\Release\net10.0-windows\ref\CalcuEXP.dll
+C:\Users\Chris V\Documents\GitHub\Proyecto3VeranoDatos1\CalcuEXP\obj\Release\net10.0-windows\CalcuEXP.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Chris V\Documents\GitHub\Proyecto3VeranoDatos1\CalcuEXP\obj\Release\net10.0-windows\CalcuEXP.dll
+C:\Users\Chris V\Documents\GitHub\Proyecto3VeranoDatos1\CalcuEXP\obj\Release\net10.0-windows\refint\CalcuEXP.dll
+C:\Users\Chris V\Documents\GitHub\Proyecto3VeranoDatos1\CalcuEXP\obj\Release\net10.0-windows\CalcuEXP.pdb
